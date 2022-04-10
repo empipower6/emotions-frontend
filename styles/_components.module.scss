@@ -1,0 +1,24 @@
+.results {
+  padding-top: 10px;
+}
+.results h2 {
+  text-align: center;
+}
+.list .listItem p {
+  margin: 0;
+  text-align: center;
+}
+
+.dictionary .dictionaryItem .dictionaryItemEmotions {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.dictionary .dictionaryItem,
+.rawCount .rawItem,
+.highEmotions .emotionItem,
+.frequencies .frequenciesItem {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    text-align: center;
+  }
+
+  .textInputDiv {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 70vw;
+    .textarea {
+      margin: 20px 0;
+      font-size: 15px;
+      padding: 10px;
+      width: 70vw;
+      height: 20vh;
+    }
+
+    .buttons {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: center;
+      button {
+        background: none;
+        border: none;
+        border-bottom: 1px solid black;
+        padding: 5px;
+        margin: 0 5px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.1s;
+      }
+      button:hover {
+        background-color: black;
+        color: white;
+      }
+    }
+  }
+}
