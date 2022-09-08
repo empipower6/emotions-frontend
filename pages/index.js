@@ -35,39 +35,60 @@ export default function Home() {
   const analyze = (tech) => {
     if (text) {
       updateLocalStorage();
-      fetch("https://emotions-backend.herokuapp.com/api/analyze", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ technique: tech, textAnalyze: String(text) }),
-      })
-        .then((res) => {
-          return res.status === 200
-            ? res.json()
-            : setErrors("Something went wrong.");
+      if (tech === "newWords") {
+        updateLocalStorage();
+        fetch("http://127.0.0.1:5000/api/gunterwords", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ textAnalyze: String(text) }),
         })
-        .then((data) => {
-          const newResults = [];
-          let num = 0;
-          if (tech === "wordList") {
-            num = 0;
-          } else if (tech === "affectList") {
-            num = 1;
-          } else if (tech === "affectDictionary") {
-            num = 2;
-          } else if (tech === "emotionalCount") {
-            num = 3;
-          } else if (tech === "highestEmotion") {
-            num = 4;
-          } else if (tech === "affectFrequencies") {
-            num = 5;
-          }
-          newResults[num] = data.results;
-          setResults(newResults);
-          setTech(num);
-        });
+          .then((res) => {
+            return res.status === 200
+              ? res.json()
+              : setErrors("Something went wrong.");
+          })
+          .then((data) => {
+            setTech(6);
+            setResults(data);
+          });
+      } else {
+        fetch("https://emotions-backend.herokuapp.com/api/analyze", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ technique: tech, textAnalyze: String(text) }),
+        })
+          .then((res) => {
+            return res.status === 200
+              ? res.json()
+              : setErrors("Something went wrong.");
+          })
+          .then((data) => {
+            const newResults = [];
+            let num = 0;
+            if (tech === "wordList") {
+              num = 0;
+            } else if (tech === "affectList") {
+              num = 1;
+            } else if (tech === "affectDictionary") {
+              num = 2;
+            } else if (tech === "emotionalCount") {
+              num = 3;
+            } else if (tech === "highestEmotion") {
+              num = 4;
+            } else if (tech === "affectFrequencies") {
+              num = 5;
+            }
+            newResults[num] = data.results;
+            setResults(newResults);
+            setTech(num);
+          });
+      }
     } else {
       setErrors("Input some text");
     }
@@ -120,6 +141,9 @@ export default function Home() {
           </button>
           <button onClick={() => analyze("affectFrequencies")}>
             Affect Frequencies
+          </button>
+          <button onClick={() => analyze("newWords")}>
+            Gunter&apos;s Words
           </button>
           <button onClick={() => clearAll()}>Clear All</button>
         </div>
