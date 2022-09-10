@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/_components.module.scss";
+import styles from "../../styles/_components.module.scss";
 const List = ({ listData }) => {
   const [data, setData] = useState(listData);
 

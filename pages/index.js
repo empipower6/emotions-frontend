@@ -1,14 +1,16 @@
 import Head from "next/head";
 import styles from "../styles/_home.module.scss";
-import { useEffect, useState } from "react";
-import Results from "../components/results";
-
+import { useEffect, useState, useRef } from "react";
+import PYPISection from "../components/pypi/PYPISection";
+import GunterSection from "../components/gunter/gunterSection";
 export default function Home() {
   const [text, setText] = useState("");
-  const [tech, setTech] = useState(-1);
-  const [results, setResults] = useState([]);
-
-  const [errors, setErrors] = useState("");
+  const [pypiData, setPypiData] = useState({
+    error: "",
+    tech: -1,
+    results: [],
+  });
+  const [gunterData, setGunterData] = useState({ error: "", results: [] });
 
   useEffect(() => {
     const localData = localStorage.getItem("emotionText")
@@ -17,81 +19,21 @@ export default function Home() {
     if (localData) {
       setText(localData);
     }
+    // fetch("./resources/words.json")
+    //   .then((data) => data.json())
+    //   .then((jsonData) => console.log(jsonData));
   }, []);
   const updateLocalStorage = () => {
     localStorage.setItem("emotionText", text);
   };
 
   const clearAll = () => {
-    setTech(-1);
-    setResults([]);
+    setLeft({ error: "", tech: -1, results: [] });
     setText("");
-    setErrors("");
   };
   const updateText = (e) => {
     setText(e.target.value);
-    setErrors("");
-  };
-  const analyze = (tech) => {
-    if (text) {
-      updateLocalStorage();
-      if (tech === "newWords") {
-        updateLocalStorage();
-        fetch("https://emotions-backend.herokuapp.com/api/gunterwords", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ textAnalyze: String(text) }),
-        })
-          .then((res) => {
-            return res.status === 200
-              ? res.json()
-              : setErrors("Something went wrong.");
-          })
-          .then((data) => {
-            setTech(6);
-            setResults(data);
-          });
-      } else {
-        fetch("https://emotions-backend.herokuapp.com/api/analyze", {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ technique: tech, textAnalyze: String(text) }),
-        })
-          .then((res) => {
-            return res.status === 200
-              ? res.json()
-              : setErrors("Something went wrong.");
-          })
-          .then((data) => {
-            const newResults = [];
-            let num = 0;
-            if (tech === "wordList") {
-              num = 0;
-            } else if (tech === "affectList") {
-              num = 1;
-            } else if (tech === "affectDictionary") {
-              num = 2;
-            } else if (tech === "emotionalCount") {
-              num = 3;
-            } else if (tech === "highestEmotion") {
-              num = 4;
-            } else if (tech === "affectFrequencies") {
-              num = 5;
-            }
-            newResults[num] = data.results;
-            setResults(newResults);
-            setTech(num);
-          });
-      }
-    } else {
-      setErrors("Input some text");
-    }
+    updateLocalStorage();
   };
   return (
     <div className={styles.container}>
@@ -117,9 +59,14 @@ export default function Home() {
       </Head>
       <h1 className={styles.title}>Emotion Analysis</h1>
       <div className={styles.textInputDiv}>
-        <label htmlFor="w3review">
-          Write down the text you want to analyze.
-        </label>
+        <div className={styles.textSettings}>
+          <label htmlFor="w3review">
+            Write down the text you want to analyze.
+          </label>
+          <button className={styles.clearButton} onClick={() => clearAll()}>
+            Clear All
+          </button>
+        </div>
         <textarea
           id="w3review"
           name="w3review"
@@ -127,29 +74,19 @@ export default function Home() {
           value={text}
           onChange={(e) => updateText(e)}
         ></textarea>
-        <div className={styles.buttons}>
-          <button onClick={() => analyze("wordList")}>Words List</button>
-          <button onClick={() => analyze("affectList")}>Affect List</button>
-          <button onClick={() => analyze("affectDictionary")}>
-            Affect Dictionary
-          </button>
-          <button onClick={() => analyze("emotionalCount")}>
-            Raw Emotional Counts
-          </button>
-          <button onClick={() => analyze("highestEmotion")}>
-            Highest Emotions
-          </button>
-          <button onClick={() => analyze("affectFrequencies")}>
-            Affect Frequencies
-          </button>
-          <button onClick={() => analyze("newWords")}>
-            Gunter&apos;s Words
-          </button>
-          <button onClick={() => clearAll()}>Clear All</button>
+        <div className={styles.sections}>
+          <section className={styles.smallSection}>
+            <PYPISection text={text} data={pypiData} setData={setPypiData} />
+          </section>
+          <section className={`${styles.smallSection} ${styles.midLine}`}>
+            {/* <GunterSection
+              text={text}
+              data={gunterData}
+              setData={setGunterData}
+            /> */}
+          </section>
         </div>
       </div>
-      {tech > -1 ? <Results num={tech} data={results} /> : ""}
-      {errors ? <p>{errors}</p> : ""}
     </div>
   );
 }

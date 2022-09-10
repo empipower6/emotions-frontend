@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/_components.module.scss";
+import styles from "../../styles/_components.module.scss";
 const High = ({ highData }) => {
   const [data, setData] = useState(highData);
   useEffect(() => {

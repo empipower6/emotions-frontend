@@ -21,7 +21,20 @@
       width: 70vw;
       height: 20vh;
     }
+    .clearButton {
+      background: orange;
+      border: none;
+      border: 1px solid orange;
+      padding: 5px;
+      margin: 0 5px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.1s;
 
+      &:hover {
+        background-color: white;
+      }
+    }
     .buttons {
       width: 100%;
       display: flex;
@@ -42,6 +55,18 @@
         background-color: black;
         color: white;
       }
+    }
+  }
+  .sections {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 70vw;
+
+    .smallSection {
+      width: 50%;
+    }
+    .smallSection.midLine {
+      border-left: 1px solid black;
     }
   }
 }

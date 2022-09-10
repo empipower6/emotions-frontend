@@ -1,4 +1,4 @@
-import styles from "../styles/_components.module.scss";
+import styles from "../../styles/_components.module.scss";
 import { useState, useEffect } from "react";
 const Dictionary = ({ dictData }) => {
   const [data, setData] = useState(dictData);

@@ -4,12 +4,10 @@ import Dictionary from "./dictionary";
 import RawCount from "./rawCount";
 import High from "./high";
 import Frequency from "./frequency";
-import GunterWords from "./gunterWords";
 
 const Result = ({ num, data }) => {
   const [toggle, setToggle] = useState(-1);
   useEffect(() => {
-    console.log(num);
     setToggle(num);
   }, [num]);
 
@@ -25,8 +23,6 @@ const Result = ({ num, data }) => {
         <High highData={data[toggle]} />
       ) : toggle === 5 ? (
         <Frequency frequencyData={data[toggle]} />
-      ) : toggle === 6 ? (
-        <GunterWords data={data} />
       ) : (
         ""
       )}

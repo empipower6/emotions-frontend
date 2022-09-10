@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/_components.module.scss";
+import styles from "../../styles/_components.module.scss";
 const Frequency = ({ frequencyData }) => {
   const [data, setData] = useState(frequencyData);
   useEffect(() => {

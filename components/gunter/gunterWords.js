@@ -1,6 +1,5 @@
 import styles from "../styles/_components.module.scss";
 const GunterWords = ({ data }) => {
-  console.log(data);
   return (
     <div className={`${styles.frequencies} ${styles.results}`}>
       <h2> Gunter Results</h2>
